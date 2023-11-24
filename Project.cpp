@@ -57,7 +57,28 @@ void RunLogic(void)
 void DrawScreen(void)
 {
     MacUILib_clearScreen();    
-
+    char board[10][20];
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 20; j++)
+        {
+            //Drawing board
+            board[i][j] = ' ';
+        }
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        for (int j = 0; j < 20; j++)
+        {
+            //Drawimg board
+            if (i == 0 || j == 0 || i == 9 || j == 19)
+            {
+                board[i][j] = '#';
+            }
+            MacUILib_printf("%c",board[i][j]);
+        }
+        MacUILib_printf("\n"); 
+    }
 }
 
 void LoopDelay(void)
