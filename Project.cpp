@@ -1,13 +1,14 @@
 #include <iostream>
 #include "MacUILib.h"
 #include "objPos.h"
+#include "GameMechs.h"
 
 
 using namespace std;
 
 #define DELAY_CONST 100000
 
-bool exitFlag;
+GameMechs* myGM;
 
 void Initialize(void);
 void GetInput(void);
@@ -23,7 +24,7 @@ int main(void)
 
     Initialize();
 
-    while(exitFlag == false)  
+    while(myGM->getExitFlagStatus() == false)  
     {
         GetInput();
         RunLogic();
@@ -41,44 +42,67 @@ void Initialize(void)
     MacUILib_init();
     MacUILib_clearScreen();
 
-    exitFlag = false;
+    myGM = new GameMechs();
+    
 }
 
 void GetInput(void)
 {
-   
+
 }
 
 void RunLogic(void)
 {
-    
+    if(myGM->getInput() == '/')
+    {
+        myGM->setExitTrue();
+    }
+    if(myGM->getInput() == '+')
+    {
+        myGM->incrementScore();
+    }
+    if(myGM->getInput() == 'L')
+    {
+        myGM->setLoseFlag();
+        myGM->setExitTrue();
+    }
+    myGM->clearInput();
 }
 
 void DrawScreen(void)
 {
-    MacUILib_clearScreen();    
-    char board[10][20];
-    for (int i = 0; i < 10; i++)
+    int bX = myGM->getBoardSizeX();
+    int bY = myGM->getBoardSizeY();
+
+    char board[bY][bX];
+
+    MacUILib_clearScreen();
+
+    for (int i = 0; i < bY; i++)
     {
-        for (int j = 0; j < 20; j++)
+        for (int j = 0; j < bX; j++)
         {
             //Drawing board
             board[i][j] = ' ';
         }
     }
-    for (int i = 0; i < 10; i++)
+
+    for (int i = 0; i < bY; i++)
     {
-        for (int j = 0; j < 20; j++)
+        for (int j = 0; j < bX; j++)
         {
-            //Drawimg board
-            if (i == 0 || j == 0 || i == 9 || j == 19)
+            //Drawing board
+            if (i == 0 || j == 0 || i == bY - 1 || j == bX - 1)
             {
                 board[i][j] = '#';
             }
+ 
             MacUILib_printf("%c",board[i][j]);
         }
-        MacUILib_printf("\n"); 
+        MacUILib_printf("\n");        
     }
+    MacUILib_printf("%d", myGM->getScore());
+
 }
 
 void LoopDelay(void)
@@ -89,7 +113,11 @@ void LoopDelay(void)
 
 void CleanUp(void)
 {
-    MacUILib_clearScreen();    
-  
+    MacUILib_clearScreen();   
+    if(myGM->getLoseFlagStatus() == true)
+    {
+        MacUILib_printf("LOSER");
+    }
+    delete myGM;
     MacUILib_uninit();
 }
