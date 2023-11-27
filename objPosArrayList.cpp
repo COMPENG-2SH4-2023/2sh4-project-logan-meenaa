@@ -28,7 +28,7 @@ int objPosArrayList::getSize()
 void objPosArrayList::insertHead(objPos thisPos)
 {
     if(sizeList < sizeArray){
-            for(int i = sizeList; i > 0; i--)
+        for(int i = sizeList; i > 0; i--)
         {
             aList[i].setObjPos(aList[i-1]); // Shuffling towards tail
         }
