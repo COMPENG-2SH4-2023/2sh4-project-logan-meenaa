@@ -130,6 +130,8 @@ void CleanUp(void)
     {
         MacUILib_printf("LOSER");
     }
+    
     delete myGM;
+    delete myPlayer;
     MacUILib_uninit();
 }
