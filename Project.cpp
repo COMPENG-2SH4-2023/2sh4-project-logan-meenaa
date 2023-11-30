@@ -46,8 +46,11 @@ void Initialize(void)
     MacUILib_clearScreen();
 
     myGM = new GameMechs();
-    myPlayer = new Player(myGM);
+    myPlayer = new Player(myGM);    
     
+    objPos currPos;
+    myPlayer->getPlayerPos(currPos);
+    myGM->generateFood(currPos);
 }
 
 void GetInput(void)
@@ -56,7 +59,9 @@ void GetInput(void)
 }
 
 void RunLogic(void)
-{
+{    
+    objPos currPos;
+
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
     if(myGM->getInput() == '/')
@@ -72,7 +77,14 @@ void RunLogic(void)
         myGM->setLoseFlag();
         myGM->setExitTrue();
     }
+    if(myGM->getInput() == 'F')
+    {
+        myPlayer->getPlayerPos(currPos);
+        myGM->generateFood(currPos);
+    }
     myGM->clearInput();
+
+
 }
 
 void DrawScreen(void)
@@ -80,8 +92,9 @@ void DrawScreen(void)
     int bX = myGM->getBoardSizeX();
     int bY = myGM->getBoardSizeY();
     objPos currPos;
+    objPos foodPos;
     myPlayer->getPlayerPos(currPos);
-
+    myGM->getFoodPos(foodPos);
     char board[bY][bX];
 
     MacUILib_clearScreen();
@@ -108,7 +121,10 @@ void DrawScreen(void)
             {
                 board[i][j] = currPos.symbol;
             }
- 
+            if (i == foodPos.y && j == foodPos.x)
+            {
+                board[i][j] = foodPos.symbol;
+            }
             MacUILib_printf("%c",board[i][j]);
         }
         MacUILib_printf("\n");        

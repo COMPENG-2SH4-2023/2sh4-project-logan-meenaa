@@ -10,6 +10,7 @@ GameMechs::GameMechs()
     boardSizeX = 30;
     boardSizeY = 15;
 
+    foodPos.setObjPos(-1, -1, 'o'); // initialize outside of board
 }
 
 GameMechs::GameMechs(int boardX, int boardY)
@@ -20,11 +21,11 @@ GameMechs::GameMechs(int boardX, int boardY)
     score = 0;
     boardSizeX = boardX;
     boardSizeY = boardY;
+
+    foodPos.setObjPos(-1, -1, 'o'); // initialize outside of board
 }
 
 // do you need a destructor?
-
-
 
 bool GameMechs::getExitFlagStatus()
 {
@@ -87,4 +88,23 @@ void GameMechs::incrementScore()
     score ++;
 }
 
+void GameMechs::generateFood(objPos blockOff)
+{
+    int samePos = 0;
+    srand(time(NULL)); // Make rand() truly random
+    do
+    {
+        foodPos.setObjPos(rand() % (getBoardSizeX() - 2) + 1, rand() % (getBoardSizeY() - 2) + 1, 'o');
+        samePos = 0;
+        if (foodPos.isPosEqual(&blockOff))
+        {
+            samePos = 1;
+        }   
+    } while (samePos == 1);
 
+}
+
+void GameMechs::getFoodPos(objPos &returnPos)
+{
+    returnPos.setObjPos(foodPos);
+}
