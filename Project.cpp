@@ -48,9 +48,8 @@ void Initialize(void)
     myGM = new GameMechs();
     myPlayer = new Player(myGM);    
     
-    objPos currPos;
-    myPlayer->getPlayerPos(currPos);
-    myGM->generateFood(currPos);
+    objPos tempPos{1, 1, 'o'};
+    myGM->generateFood(tempPos);
 }
 
 void GetInput(void)
@@ -60,8 +59,8 @@ void GetInput(void)
 
 void RunLogic(void)
 {    
-    objPos currPos;
-
+    objPos tempPos{1, 1, 'o'};
+    
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
     if(myGM->getInput() == '/')
@@ -79,8 +78,7 @@ void RunLogic(void)
     }
     if(myGM->getInput() == 'F')
     {
-        myPlayer->getPlayerPos(currPos);
-        myGM->generateFood(currPos);
+        myGM->generateFood(tempPos);
     }
     myGM->clearInput();
 
@@ -91,11 +89,15 @@ void DrawScreen(void)
 {
     int bX = myGM->getBoardSizeX();
     int bY = myGM->getBoardSizeY();
-    objPos currPos;
-    objPos foodPos;
-    myPlayer->getPlayerPos(currPos);
-    myGM->getFoodPos(foodPos);
+
     char board[bY][bX];
+    bool drawn;
+
+    objPosArrayList* playerBody = myPlayer->getPlayerPos();
+    objPos tempBody;
+
+    objPos foodPos;
+    myGM->getFoodPos(foodPos);
 
     MacUILib_clearScreen();
 
@@ -107,21 +109,27 @@ void DrawScreen(void)
             board[i][j] = ' ';
         }
     }
-
-    for (int i = 0; i < bY; i++)
+    for (int i = 0; i < myGM->getBoardSizeY(); i++)
     {
-        for (int j = 0; j < bX; j++)
+        for (int j = 0; j < myGM->getBoardSizeX(); j++)
         {
+            // iterate through player list
+            for(int k = 0; k < playerBody->getSize(); k++)
+            {
+                playerBody->getElement(tempBody, k);
+                if (i == tempBody.y && j == tempBody.x)
+                {
+                    board[i][j] = tempBody.symbol;
+                }
+            }
+
+
             //Drawing board
-            if (i == 0 || j == 0 || i == bY - 1 || j == bX - 1)
+            if (i == 0 || j == 0 || i == myGM->getBoardSizeY() - 1 || j == myGM->getBoardSizeX() - 1)
             {
                 board[i][j] = '#';
             }
-            if (i == currPos.y && j == currPos.x)
-            {
-                board[i][j] = currPos.symbol;
-            }
-            if (i == foodPos.y && j == foodPos.x)
+            else if (i == foodPos.y && j == foodPos.x)
             {
                 board[i][j] = foodPos.symbol;
             }
@@ -129,8 +137,8 @@ void DrawScreen(void)
         }
         MacUILib_printf("\n");        
     }
-    MacUILib_printf("%d", myGM->getScore());
-
+    MacUILib_printf("Score: %d", myGM->getScore());
+    
 }
 
 void LoopDelay(void)
