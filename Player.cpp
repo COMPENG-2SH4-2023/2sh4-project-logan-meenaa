@@ -11,18 +11,15 @@ Player::Player(GameMechs* thisGMRef)
     tempPos.setObjPos(mainGameMechsRef->getBoardSizeX() / 2, mainGameMechsRef->getBoardSizeY() / 2, '@');
 
     playerPosList = new objPosArrayList();
+
+    // Creating long snake to demonstrate 3.1 completion
     playerPosList->insertHead(tempPos);
     playerPosList->insertHead(tempPos);
     playerPosList->insertHead(tempPos);
     playerPosList->insertHead(tempPos);
     playerPosList->insertHead(tempPos);
     playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
-    playerPosList->insertHead(tempPos);
+    
 }
 
 

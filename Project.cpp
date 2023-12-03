@@ -59,23 +59,30 @@ void GetInput(void)
 
 void RunLogic(void)
 {    
+    // 3.1 logic for food generation
     objPos tempPos{1, 1, 'o'};
     
+    // Player control
     myPlayer->updatePlayerDir();
     myPlayer->movePlayer();
+
+    // To end game
     if(myGM->getInput() == '/')
     {
         myGM->setExitTrue();
     }
+    // For Score
     if(myGM->getInput() == '+')
     {
         myGM->incrementScore();
     }
+    // For Suicide
     if(myGM->getInput() == 'L')
     {
         myGM->setLoseFlag();
         myGM->setExitTrue();
     }
+    // 3.1 logic for food generation
     if(myGM->getInput() == 'F')
     {
         myGM->generateFood(tempPos);
@@ -87,11 +94,9 @@ void RunLogic(void)
 
 void DrawScreen(void)
 {
+    // Variables for code legibility
     int bX = myGM->getBoardSizeX();
     int bY = myGM->getBoardSizeY();
-
-    char board[bY][bX];
-    bool drawn;
 
     objPosArrayList* playerBody = myPlayer->getPlayerPos();
     objPos tempBody;
@@ -99,44 +104,52 @@ void DrawScreen(void)
     objPos foodPos;
     myGM->getFoodPos(foodPos);
 
+    // Resetting screen
     MacUILib_clearScreen();
 
+    // Initializing game board
+    char board[bY][bX];
     for (int i = 0; i < bY; i++)
     {
         for (int j = 0; j < bX; j++)
         {
-            //Drawing board
+            //Initializing board
             board[i][j] = ' ';
         }
     }
-    for (int i = 0; i < myGM->getBoardSizeY(); i++)
+    for (int i = 0; i < bY; i++)
     {
-        for (int j = 0; j < myGM->getBoardSizeX(); j++)
+        for (int j = 0; j < bX; j++)
         {
-            // iterate through player list
+            // Iterate through player list
             for(int k = 0; k < playerBody->getSize(); k++)
             {
                 playerBody->getElement(tempBody, k);
+                // Drawing player
                 if (i == tempBody.y && j == tempBody.x)
                 {
                     board[i][j] = tempBody.symbol;
                 }
             }
-
-
-            //Drawing board
-            if (i == 0 || j == 0 || i == myGM->getBoardSizeY() - 1 || j == myGM->getBoardSizeX() - 1)
+            
+            // Drawing border
+            if (i == 0 || j == 0 || i == bY - 1 || j == bX - 1)
             {
                 board[i][j] = '#';
             }
+
+            // Drawing food
             else if (i == foodPos.y && j == foodPos.x)
             {
                 board[i][j] = foodPos.symbol;
             }
+            // Printing board row
             MacUILib_printf("%c",board[i][j]);
         }
+        // Going to next row
         MacUILib_printf("\n");        
     }
+    // Printing score
     MacUILib_printf("Score: %d", myGM->getScore());
     
 }

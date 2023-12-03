@@ -4,6 +4,8 @@ Project Preparation Activity 3
 
 You must watch the briefing video and read through the manual to engage in the development activities.
 
+NOTE: I was given an exemption to do up to and including iteration 3 part 1 to earn 100% 
+due to doing the project alone. 
 
 Section: L02
 

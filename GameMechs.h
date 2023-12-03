@@ -50,7 +50,7 @@ class GameMechs
         int getScore();
         void incrementScore();
 
-        void generateFood(objPos blockOff); // upgrade this
+        void generateFood(objPos blockOff); 
         void getFoodPos(objPos &returnPos); 
         
 

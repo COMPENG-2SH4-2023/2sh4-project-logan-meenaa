@@ -3,8 +3,6 @@
 // Paste your CUTE Tested implementation here.
 // Paste your CUTE Tested implementation here.
 // Paste your CUTE Tested implementation here.
-#include "objPosArrayList.h"
-
 // Check lecture contents on general purpose array list construction, 
 // and modify it to support objPos array list construction.
 
@@ -27,6 +25,7 @@ int objPosArrayList::getSize()
 
 void objPosArrayList::insertHead(objPos thisPos)
 {
+    // If statement to avoid edge case
     if(sizeList < sizeArray){
         for(int i = sizeList; i > 0; i--)
         {
@@ -42,6 +41,7 @@ void objPosArrayList::insertHead(objPos thisPos)
 
 void objPosArrayList::insertTail(objPos thisPos)
 {
+    // If statement to avoid edge case
     if(sizeList < sizeArray){
         aList[sizeList].setObjPos(thisPos);
 
@@ -51,6 +51,7 @@ void objPosArrayList::insertTail(objPos thisPos)
 
 void objPosArrayList::removeHead()
 {
+    // If statement to avoid edge case
     if (sizeList > 0)
     {
         for (int i = 0; i < sizeList - 1; i++)
@@ -64,6 +65,7 @@ void objPosArrayList::removeHead()
 
 void objPosArrayList::removeTail()
 {
+    // If statement to avoid edge case
     if (sizeList > 0)
     {
         sizeList--;
@@ -82,6 +84,7 @@ void objPosArrayList::getTailElement(objPos &returnPos)
 
 void objPosArrayList::getElement(objPos &returnPos, int index)
 {
+    // If statement to avoid edge cases
     if(index >= 0 && index < sizeList){
 
         returnPos.setObjPos(aList[index]);
